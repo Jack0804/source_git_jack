@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sbs.persistence.boardMapper">
+
+	<select id="read" resultType="org.sbs.domain.BoardVO">
+		select * from tbl_board where deleted ='n' order by bno desc limit #{page}, 10
+	</select>
+	
+	<select id="view" resultType="org.sbs.domain.BoardVO">
+		select * from tbl_board where bno = #{bno} and deleted = 'n'
+	</select>
+
+	<insert id="create">
+		insert into tbl_board (writer, contents, title) values( #{writer}, #{contents}, #{title})
+	</insert>
+
+	<update id="delete">
+		update tbl_board set deleted = 'y' where bno = #{bno}
+	</update>
+	
+	<update id="update">
+		update tbl_board set writer = #{writer}, title = #{title}, contents = #{contents},
+									  hits = #{hits}, comments = #{comments} where bno = #{bno}
+	</update>
+
+	<select id="count" resultType="java.lang.Integer">
+		select count(*) count from tbl_board
+	</select>
+	
+	<update id="hits">
+		update tbl_board set hits = hits+1 where bno = #{bno}
+	</update>
+
+	<update id="comment">
+		update tbl_board set comments = (select count(cno) from tbl_comment where deleted= 'n' and bno =#{bno}) 
+																				where bno = #{bno}
+	</update>
+	
+
+
+</mapper>
