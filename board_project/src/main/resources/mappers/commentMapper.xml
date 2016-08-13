@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sbs.persistence.commentMapper">
+
+	<select id="read" resultType="org.sbs.domain.CommentVO">
+		select * from tbl_comment where deleted='n' and bno = #{bno} order by cno 
+	</select>
+	
+	<insert id="create">
+		insert into tbl_comment (bno, writer, contents ) 
+								 values(#{bno}, "작성자", #{contents})
+	</insert>
+	
+	<update id ="delete">
+		update tbl_comment set deleted = 'y' where cno = #{cno}
+	</update>
+	
+	
+	<update id="update">
+		update tbl_comment set contents = #{contents} where cno = #{cno}
+	</update>
+	
+	
+</mapper>
